@@ -51,8 +51,8 @@ jobs:
         # Prefix the list here with "+" to use these queries and those in the config file.
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.0
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1
     - run: |
         nuget restore
         msbuild /p:UseSharedCompilation=false 
