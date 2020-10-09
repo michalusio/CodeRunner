@@ -9,7 +9,7 @@ namespace Backend
     public class FullPlayerData
     {
         public readonly PlayerData PlayerData;
-        public readonly IClearableTextWriter ConsoleStream;
+        public readonly RichTextBoxWriter ConsoleStream;
         private string[] playerCode;
 
         public ReadOnlyCollection<string> PlayerCode => new ReadOnlyCollection<string>(playerCode);
@@ -17,7 +17,7 @@ namespace Backend
         internal AppDomain PlayerAppDomain { get; private set; }
 
 
-        public FullPlayerData(PlayerData data, IClearableTextWriter consoleStream)
+        public FullPlayerData(PlayerData data, RichTextBoxWriter consoleStream)
         {
             PlayerData = data;
             ConsoleStream = consoleStream;

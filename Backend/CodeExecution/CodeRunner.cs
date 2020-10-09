@@ -45,7 +45,7 @@ namespace Backend.CodeExecution
             return playerAppDomain;
         }
 
-        internal static void RunCode(AppDomain playerAppDomain, PlayerData currentPlayerData, IClearableTextWriter playerConsoleStream)
+        internal static void RunCode(AppDomain playerAppDomain, PlayerData currentPlayerData, RichTextBoxWriter playerConsoleStream)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Backend.CodeExecution
                 var proxy = (ServiceProxy)playerAppDomain.CreateInstanceFromAndUnwrap("SystemDll.dll", "SystemDll.ServiceProxy");
                 var thread = new Thread(() =>
                 {
-                    proxy.StartInstance(currentPlayerData, playerConsoleStream as TextWriter);
+                    proxy.StartInstance(currentPlayerData, playerConsoleStream);
                 })
                 {
                     IsBackground = true

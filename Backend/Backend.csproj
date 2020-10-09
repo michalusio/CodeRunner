@@ -50,7 +50,6 @@
     <Compile Include="CodeExecution\CodeHelper.cs" />
     <Compile Include="CodeExecution\CodeRunner.cs" />
     <Compile Include="FullPlayerData.cs" />
-    <Compile Include="IClearableTextWriter.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="PlayerController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

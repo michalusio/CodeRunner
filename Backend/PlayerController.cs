@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 using SystemDll;
 
 namespace Backend
 {
     public static class PlayerController
     {
-        public static IList<ulong> PlayerIds => playerData.Keys.ToList();
+        public static ImmutableList<ulong> PlayerIds => playerData.Keys.ToImmutableList();
 
         private static readonly Dictionary<ulong, FullPlayerData> playerData = new Dictionary<ulong, FullPlayerData>();
 
-        public static FullPlayerData Create(ulong id, IClearableTextWriter stream)
+        public static FullPlayerData Create(ulong id, RichTextBoxWriter stream)
         {
             if (playerData.ContainsKey(id)) return playerData[id];
 
@@ -31,7 +31,7 @@ namespace Backend
         {
             foreach (var kv in playerData)
             {
-                var streamTextWriter = kv.Value.ConsoleStream as IClearableTextWriter;
+                var streamTextWriter = kv.Value.ConsoleStream;
                 streamTextWriter.Clear();
                 var wasOpen = streamTextWriter.Open;
                 streamTextWriter.Open = false;

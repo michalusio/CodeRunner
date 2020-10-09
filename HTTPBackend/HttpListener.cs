@@ -6,7 +6,7 @@ namespace HTTPBackend
 {
     public class HttpListener
     {
-        private const int PORT = 8080;
+        private const int PORT = 8443;
 
         private readonly System.Net.HttpListener listener;
         private Thread listenerThread;
@@ -17,7 +17,7 @@ namespace HTTPBackend
         {
             Logger = logger;
             listener = new System.Net.HttpListener();
-            listener.Prefixes.Add($"http://localhost:{PORT}/");
+            listener.Prefixes.Add($"https://localhost:{PORT}/");
             responses = responseController;
             Logger.OuterLevelWrite("HTTP", () => Logger.Log($"Awaiting requests on port {PORT}"));
         }

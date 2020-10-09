@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Backend
 {
-    public class RichTextBoxWriter : TextWriter, IClearableTextWriter
+    public class RichTextBoxWriter : TextWriter
     {
         private readonly StringBuilder stream;
         private readonly RichTextBox richTextBox;
