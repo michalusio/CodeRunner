@@ -46,7 +46,7 @@ namespace HTTPBackend
                 {
                     Logger.OuterLevelWrite("HTTP", () =>
                     {
-                        Logger.Log($"Got request: {method} | {context.Request.RawUrl}");
+                        Logger.Log($"Got request: {method} | {context.Request.RawUrl.Replace(Environment.NewLine, "")}");
                         foreach(var controller in responses)
                         {
                             if (controller.RunController(context)) return;
