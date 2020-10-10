@@ -1,5 +1,6 @@
 ﻿using Backend;
 using HTTPBackend;
+using HTTPBackend.Middlewares;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -32,6 +33,8 @@ namespace FormFront
             mainConsoleWriter = new TreeLogWriter(treeView1);
             boardDrawer = new BoardDrawer();
             Console.SetOut(mainConsoleWriter);
+            HTTPService.RegisterMiddleware<ErrorHandling>();
+            HTTPService.RegisterMiddleware<Authentication>();
             httpListener = new HttpListener(new HttpController(mainConsoleWriter, richTextBoxConsole), mainConsoleWriter);
         }
 

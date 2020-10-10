@@ -1,4 +1,5 @@
 ﻿using Backend;
+using HTTPBackend.Middlewares;
 using System.Text;
 using System.Windows.Forms;
 
@@ -11,6 +12,13 @@ namespace HTTPBackend
         public HttpController(ILogger logger, RichTextBox richTextBoxConsole) : base(logger)
         {
             this.richTextBoxConsole = richTextBoxConsole;
+        }
+
+        [Request(RequestMethodType.GET, "login")]
+        public void LogIn()
+        {
+            Authentication.SignIn(Response);
+            Response.Close();
         }
 
         [Request(RequestMethodType.PUT, "{userId}")]
@@ -43,6 +51,9 @@ namespace HTTPBackend
 
             if (player == null)
             {
+                var bytes = Encoding.UTF8.GetBytes(Authentication.Data[Response].IsAuthenticated ? "Spoko" : "Nie spoko");
+                Response.OutputStream.Write(bytes, 0, bytes.Length);
+                Response.OutputStream.Flush();
                 Response.StatusCode = 404;
             }
             else

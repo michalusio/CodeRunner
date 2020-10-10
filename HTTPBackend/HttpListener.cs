@@ -1,4 +1,5 @@
 ﻿using Backend;
+using HTTPBackend.Middlewares;
 using System;
 using System.Threading;
 
@@ -42,11 +43,11 @@ namespace HTTPBackend
                 var url = context.Request.RawUrl;
                 try
                 {
-                    Logger.OuterLevelWrite("HTTP", () => Logger.Log($"Got request: {method};{context.Request.RawUrl}"));
-                    if (!responses.ResolveRequest(context))
+                    Logger.OuterLevelWrite("HTTP", () =>
                     {
-                        Logger.OuterLevelWrite("HTTP", () => Logger.Log($"Web Error: Cannot get response action for ({method};{url})"));
-                    }
+                        Logger.Log($"Got request: {method} | {context.Request.RawUrl}");
+                        responses.RunController(context);
+                    });
                 }
                 catch (Exception e)
                 {

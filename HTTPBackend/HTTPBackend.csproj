@@ -43,8 +43,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseController.cs" />
+    <Compile Include="AttributeMiddleware.cs" />
+    <Compile Include="BaseMiddleware.cs" />
+    <Compile Include="HTTPService.cs" />
+    <Compile Include="Middlewares\Authentication.cs" />
+    <Compile Include="Middlewares\ErrorHandling.cs" />
     <Compile Include="HttpController.cs" />
     <Compile Include="HttpListener.cs" />
+    <Compile Include="IMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

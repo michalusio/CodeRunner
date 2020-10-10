@@ -10,12 +10,14 @@ using System.Text.RegularExpressions;
 
 namespace HTTPBackend
 {
-    public abstract class BaseController
+    public abstract class BaseController : IMiddleware
     {
         private readonly List<RequestAttribute> RequestMethods;
+        private RequestAttribute Request;
 
         protected HttpListenerResponse Response { get; private set; }
         protected ILogger Logger { get; private set; }
+        public IMiddleware Next { private get;  set; }
 
         protected BaseController(ILogger logger)
         {
@@ -26,21 +28,31 @@ namespace HTTPBackend
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod)
                 .Select(method => (method.GetCustomAttribute<RequestAttribute>(), method))
                 .Where(mm => mm.Item1 != null)
-                .Select(mm => mm.Item1.UpdateRegex(mm.method, controllerAttrib, Logger))
+                .Select(mm => mm.Item1.SetMiddlewares(mm.method, this).UpdateRegex(mm.method, controllerAttrib, Logger))
                 .ToList();
         }
 
-        public bool ResolveRequest(HttpListenerContext context)
+        public void RunController(HttpListenerContext context)
         {
             var methodType = (RequestMethodType)Enum.Parse(typeof(RequestMethodType), context.Request.HttpMethod);
             Response = context.Response;
             foreach (var request in RequestMethods)
             {
                 if (request.MethodType != methodType) continue;
-                if (request.InvokeMethod(this, context, Logger)) return true;
+                if (request.MatchMethod(context, Logger))
+                {
+                    Request = request;
+                    request.RunMiddlewares(context);
+                    Request = null;
+                    return;
+                }
             }
             Response = null;
-            return false;
+        }
+
+        public void ResolveRequest(HttpListenerContext context)
+        {
+            Request.InvokeMethod(this, context);
         }
     }
 
@@ -49,10 +61,11 @@ namespace HTTPBackend
     {
         public readonly RequestMethodType MethodType;
         public readonly string RequestUrl;
+        private List<IMiddleware> MiddlewareStack;
         private Dictionary<string, Type> paramTypes;
         private List<string> paramNames;
-        private Regex regex;
         private MethodInfo methodInfo;
+        private Regex regex;
         private string bodyName;
 
         public RequestAttribute(RequestMethodType methodType, string requestUrl)
@@ -64,8 +77,6 @@ namespace HTTPBackend
         internal RequestAttribute UpdateRegex(MethodInfo methodInfo, ControllerAttribute controller, ILogger logger)
         {
             var controllerPrefix = controller?.UrlPrefix ?? string.Empty;
-
-            this.methodInfo = methodInfo;
 
             var methodParams = methodInfo.GetParameters();
 
@@ -84,13 +95,28 @@ namespace HTTPBackend
                 regexString.Replace(BracketName, ParameterType.GetTypeRegex(Name));
             }
             regex = new Regex(regexString.ToString(), RegexOptions.Compiled);
+
             logger.OuterLevelWrite("HTTP", () =>
-                logger.Log($"Registered endpoint: {MethodType};{regex}" + (string.IsNullOrEmpty(bodyName) ? "" : $" with body: {bodyName}"))
+                logger.Log($"Registered endpoint: {MethodType} | {regex}" + ((string.IsNullOrEmpty(bodyName) ? "" : $" with body: {bodyName}") +  $" [{MiddlewareStack.Count} Middlewares]"))
             );
             return this;
         }
 
-        public bool InvokeMethod(object instance, HttpListenerContext context, ILogger logger)
+        internal RequestAttribute SetMiddlewares(MethodInfo methodInfo, BaseController controller)
+        {
+            this.methodInfo = methodInfo;
+            MiddlewareStack = HTTPService.GetMiddlewareStack().Concat(methodInfo.GetCustomAttributes<AttributeMiddleware>()).ToList();
+            MiddlewareStack.Add(controller);
+
+            for (int i = 0; i < MiddlewareStack.Count - 1; i++)
+            {
+                MiddlewareStack[i].Next = MiddlewareStack[i + 1];
+            }
+
+            return this;
+        }
+
+        public bool MatchMethod(HttpListenerContext context, ILogger logger)
         {
             var url = context.Request.RawUrl;
             var match = regex.Match(url);
@@ -98,6 +124,19 @@ namespace HTTPBackend
             logger.OuterLevelWrite("HTTP", () =>
                 logger.Log($"Matching request on {regex}")
             );
+            return true;
+        }
+
+        public void RunMiddlewares(HttpListenerContext context)
+        {
+            MiddlewareStack.First().ResolveRequest(context);
+        }
+
+        public bool InvokeMethod(object instance, HttpListenerContext context)
+        {
+            var url = context.Request.RawUrl;
+            var match = regex.Match(url);
+            if (!match.Success) return false;
             var paramValues = match
                 .Groups
                 .Cast<Group>()
@@ -120,6 +159,7 @@ namespace HTTPBackend
 
             return true;
         }
+
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
