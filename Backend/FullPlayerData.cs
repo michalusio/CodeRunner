@@ -8,13 +8,12 @@ namespace Backend
 {
     public class FullPlayerData
     {
-        public readonly PlayerData PlayerData;
-        public readonly RichTextBoxWriter ConsoleStream;
-        private string[] playerCode;
-
+        public PlayerData PlayerData { get; }
+        public RichTextBoxWriter ConsoleStream { get; }
         public ReadOnlyCollection<string> PlayerCode => new ReadOnlyCollection<string>(playerCode);
 
-        internal AppDomain PlayerAppDomain { get; private set; }
+        private string[] playerCode;
+        private AppDomain playerAppDomain;
 
 
         public FullPlayerData(PlayerData data, RichTextBoxWriter consoleStream)
@@ -27,20 +26,20 @@ namespace Backend
         {
             try
             {
-                if (PlayerAppDomain != null)
+                if (playerAppDomain != null)
                 {
-                    AppDomain.Unload(PlayerAppDomain);
-                    PlayerAppDomain = null;
+                    AppDomain.Unload(playerAppDomain);
+                    playerAppDomain = null;
                     GC.Collect();
                 }
-                var parsed = CodeCompiler.Parse(PlayerData.PlayerIdULong, code.Select(CodeHelper.GetCodeWithDLL).ToArray());
+                var parsed = CodeCompiler.Parse(PlayerData.PlayerId, code.Select(CodeHelper.GetCodeWithDLL));
                 var compiled = CodeCompiler.Compile(parsed);
                 if (!compiled) return false;
-                var appDomain = CodeRunner.GetExecutor(PlayerData.PlayerIdULong);
+                var appDomain = CodeRunner.GetExecutor(PlayerData.PlayerId);
                 if (appDomain != null)
                 {
                     playerCode = code;
-                    PlayerAppDomain = appDomain;
+                    playerAppDomain = appDomain;
                 }
                 return true;
             }
@@ -52,6 +51,6 @@ namespace Backend
             return false;
         }
 
-        public void RunCode() => CodeRunner.RunCode(PlayerAppDomain, PlayerData, ConsoleStream);
+        public void RunCode() => CodeRunner.RunCode(playerAppDomain, PlayerData, ConsoleStream);
     }
 }

@@ -14,7 +14,7 @@ namespace SystemDll
                 Logger.CurrentPlayer = currentPlayerData;
                 Logger.CurrentConsole = playerConsoleStream;
                 var assembly = AppDomain.CurrentDomain.Load(
-                    AssemblyName.GetAssemblyName(Path.Combine("./PlayerDLLs", $"Player{currentPlayerData.PlayerIdULong}Assembly.dll"))
+                    AssemblyName.GetAssemblyName(Path.Combine("./PlayerDLLs", $"Player{currentPlayerData.PlayerId}Assembly.dll"))
                     );
 
                 var entry = assembly
