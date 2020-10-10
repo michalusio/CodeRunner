@@ -6,19 +6,12 @@ using System.Windows.Forms;
 namespace HTTPBackend
 {
     [Controller("/code/")]
-    public class HttpController : BaseController
+    internal sealed class CodeController : BaseController
     {
         private readonly RichTextBox richTextBoxConsole;
-        public HttpController(ILogger logger, RichTextBox richTextBoxConsole) : base(logger)
+        public CodeController(ILogger logger, RichTextBox richTextBoxConsole) : base(logger)
         {
             this.richTextBoxConsole = richTextBoxConsole;
-        }
-
-        [Request(RequestMethodType.GET, "login")]
-        public void LogIn()
-        {
-            Authentication.SignIn(Response);
-            Response.Close();
         }
 
         [Request(RequestMethodType.PUT, "{userId}")]
@@ -40,8 +33,6 @@ namespace HTTPBackend
             {
                 Response.StatusCode = 500;
             }
-
-            Response.Close();
         }
 
         [Request(RequestMethodType.GET, "{userId}")]
@@ -68,8 +59,6 @@ namespace HTTPBackend
                 Response.OutputStream.Flush();
                 Response.StatusCode = 200;
             }
-
-            Response.Close();
         }
     }
 }

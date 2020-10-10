@@ -6,16 +6,16 @@ namespace HTTPBackend
 {
     public static class HTTPService
     {
-        private static readonly List<Type> registeredMiddlewares = new List<Type>();
+        private static readonly List<(Type type, object[] args)> registeredMiddlewares = new List<(Type type, object[] args)>();
 
-        public static void RegisterMiddleware<T>() where T: BaseMiddleware
+        public static void RegisterMiddleware<T>(params object[] args) where T: BaseMiddleware
         {
-            registeredMiddlewares.Add(typeof(T));
+            registeredMiddlewares.Add((typeof(T), args));
         }
 
         public static List<IMiddleware> GetMiddlewareStack()
         {
-            return registeredMiddlewares.Select(type => Activator.CreateInstance(type) as IMiddleware).ToList();
+            return registeredMiddlewares.Select(data => Activator.CreateInstance(data.type, data.args) as IMiddleware).ToList();
         }
     }
 }

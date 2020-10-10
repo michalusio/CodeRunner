@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net;
 
 namespace HTTPBackend.Middlewares
 {
-    public class Authentication : BaseMiddleware
+    public sealed class Authentication : BaseMiddleware
     {
         internal const string SessionCookieName = "Session";
 
         public static IReadOnlyDictionary<HttpListenerResponse, Session> Data => new ReadOnlyDictionary<HttpListenerResponse, Session>(data);
         private static readonly Dictionary<HttpListenerResponse, Session> data = new Dictionary<HttpListenerResponse, Session>();
 
-        private static readonly List<(Guid, Dictionary<string, string>)> sessionNonces = new List<(Guid, Dictionary<string, string>)>();
+        private static readonly List<(Guid Guid, Dictionary<string, string> Data)> sessionNonces = new List<(Guid, Dictionary<string, string>)>();
+
+        internal static void RemoveNonce(string token)
+        {
+            sessionNonces.RemoveAll(nonce => nonce.Guid.ToString() == token);
+        }
 
         public override void ResolveRequest(HttpListenerContext context)
         {
@@ -42,6 +46,17 @@ namespace HTTPBackend.Middlewares
             };
             response.SetCookie(cookie);
         }
+
+        public static void SignOut(HttpListenerResponse response)
+        {
+            var sessionCookie = response.Cookies[SessionCookieName];
+            if (sessionCookie != null && !sessionCookie.Expired)
+            {
+                sessionCookie.Expires = DateTime.Now.AddDays(-1);
+                sessionCookie.Expired = true;
+                RemoveNonce(sessionCookie.Value);
+            }
+        }
     }
 
     public class Session
@@ -49,20 +64,26 @@ namespace HTTPBackend.Middlewares
         public bool IsAuthenticated { get; }
         public Dictionary<string, string> SessionData { get; }
 
-        internal Session(Cookie sessionCookie, List<(Guid, Dictionary<string, string>)> nonces)
+        internal Session(Cookie sessionCookie, List<(Guid Guid, Dictionary<string, string> Data)> nonces)
         {
-            if (sessionCookie == null || sessionCookie.Expired)
+            if (sessionCookie == null)
             {
                 IsAuthenticated = false;
                 return;
             }
+            if (sessionCookie.Expired)
+            {
+                IsAuthenticated = false;
+                Authentication.RemoveNonce(sessionCookie.Value);
+                return;
+            }
             foreach (var nonce in nonces)
             {
-                if (nonce.Item1.ToString() == sessionCookie.Value)
+                if (nonce.Guid.ToString() == sessionCookie.Value)
                 {
                     IsAuthenticated = true;
-                    SessionData = nonce.Item2;
-                    Console.WriteLine($"Session {nonce.Item1}");
+                    SessionData = nonce.Data;
+                    Console.WriteLine($"Session {nonce.Guid}");
                     return;
                 }
             }

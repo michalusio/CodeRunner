@@ -35,7 +35,12 @@ namespace FormFront
             Console.SetOut(mainConsoleWriter);
             HTTPService.RegisterMiddleware<ErrorHandling>();
             HTTPService.RegisterMiddleware<Authentication>();
-            httpListener = new HttpListener(new HttpController(mainConsoleWriter, richTextBoxConsole), mainConsoleWriter);
+            var controllers = new BaseController[]
+            {
+                new AccountController(mainConsoleWriter),
+                new CodeController(mainConsoleWriter, richTextBoxConsole)
+            };
+            httpListener = new HttpListener(controllers, mainConsoleWriter);
         }
 
         private void RebindList()

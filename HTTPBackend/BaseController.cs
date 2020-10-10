@@ -1,5 +1,7 @@
 ﻿using Backend;
+using Newtonsoft.Json;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -32,22 +34,30 @@ namespace HTTPBackend
                 .ToList();
         }
 
-        public void RunController(HttpListenerContext context)
+        internal bool RunController(HttpListenerContext context)
         {
             var methodType = (RequestMethodType)Enum.Parse(typeof(RequestMethodType), context.Request.HttpMethod);
             Response = context.Response;
-            foreach (var request in RequestMethods)
+            try
             {
-                if (request.MethodType != methodType) continue;
-                if (request.MatchMethod(context, Logger))
+                foreach (var request in RequestMethods)
                 {
-                    Request = request;
-                    request.RunMiddlewares(context);
-                    Request = null;
-                    return;
+                    if (request.MethodType != methodType) continue;
+                    if (request.MatchMethod(context, Logger))
+                    {
+                        Request = request;
+                        request.RunMiddlewares(context);
+                        Response.Close();
+                        return true;
+                    }
                 }
             }
-            Response = null;
+            finally
+            {
+                Request = null;
+                Response = null;
+            }
+            return false;
         }
 
         public void ResolveRequest(HttpListenerContext context)
@@ -57,16 +67,16 @@ namespace HTTPBackend
     }
 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    internal sealed class RequestAttribute : Attribute
+    public sealed class RequestAttribute : Attribute
     {
-        public readonly RequestMethodType MethodType;
-        public readonly string RequestUrl;
+        internal readonly RequestMethodType MethodType;
+        internal readonly string RequestUrl;
         private List<IMiddleware> MiddlewareStack;
         private Dictionary<string, Type> paramTypes;
         private List<string> paramNames;
         private MethodInfo methodInfo;
         private Regex regex;
-        private string bodyName;
+        private (string Name, Type Type) body;
 
         public RequestAttribute(RequestMethodType methodType, string requestUrl)
         {
@@ -80,7 +90,11 @@ namespace HTTPBackend
 
             var methodParams = methodInfo.GetParameters();
 
-            bodyName = methodParams.Where(m => m.GetCustomAttribute<RequestBodyAttribute>() != null).SingleOrDefault()?.Name;
+            var bodyParameter = methodParams.Where(m => m.GetCustomAttribute<RequestBodyAttribute>() != null).SingleOrDefault();
+            if (bodyParameter != null)
+            {
+                body = (bodyParameter.Name, bodyParameter.ParameterType);
+            }
 
             var parameters = methodParams.Select(p => (p.Name, p.ParameterType));
 
@@ -97,7 +111,7 @@ namespace HTTPBackend
             regex = new Regex(regexString.ToString(), RegexOptions.Compiled);
 
             logger.OuterLevelWrite("HTTP", () =>
-                logger.Log($"Registered endpoint: {MethodType} | {regex}" + ((string.IsNullOrEmpty(bodyName) ? "" : $" with body: {bodyName}") +  $" [{MiddlewareStack.Count} Middlewares]"))
+                logger.Log($"Registered endpoint: {MethodType} | {regex}" + ((body.Name != null ? $" with body: {body.Name}" : "") +  $" [{MiddlewareStack.Count} Middlewares]"))
             );
             return this;
         }
@@ -116,7 +130,7 @@ namespace HTTPBackend
             return this;
         }
 
-        public bool MatchMethod(HttpListenerContext context, ILogger logger)
+        internal bool MatchMethod(HttpListenerContext context, ILogger logger)
         {
             var url = context.Request.RawUrl;
             var match = regex.Match(url);
@@ -127,12 +141,12 @@ namespace HTTPBackend
             return true;
         }
 
-        public void RunMiddlewares(HttpListenerContext context)
+        internal void RunMiddlewares(HttpListenerContext context)
         {
             MiddlewareStack.First().ResolveRequest(context);
         }
 
-        public bool InvokeMethod(object instance, HttpListenerContext context)
+        internal bool InvokeMethod(object instance, HttpListenerContext context)
         {
             var url = context.Request.RawUrl;
             var match = regex.Match(url);
@@ -142,12 +156,12 @@ namespace HTTPBackend
                 .Cast<Group>()
                 .Skip(1)
                 .Select(g => (g.Name, value: paramTypes[g.Name].GetTypeRegexValue(g.Value)));
-            if (bodyName != null)
+            if (body.Name != null)
             {
                 if (!context.Request.HasEntityBody) throw new Exception("No request body when required");
                 using (var reader = new StreamReader(context.Request.InputStream))
                 {
-                    paramValues = paramValues.Append((bodyName, reader.ReadToEnd()));
+                    paramValues = paramValues.Append((body.Name, body.Type.GetTypeRegexValue(reader.ReadToEnd())));
                 }
             }
             else if (context.Request.HasEntityBody) throw new Exception("Request body when not required");
@@ -163,9 +177,9 @@ namespace HTTPBackend
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    internal sealed class ControllerAttribute : Attribute
+    public sealed class ControllerAttribute : Attribute
     {
-        public readonly string UrlPrefix;
+        internal readonly string UrlPrefix;
         public ControllerAttribute(string urlPrefix)
         {
             UrlPrefix = urlPrefix;
@@ -173,19 +187,19 @@ namespace HTTPBackend
     }
 
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
-    internal sealed class RequestBodyAttribute : Attribute
+    public sealed class RequestBodyAttribute : Attribute
     {
 
     }
 
-    internal enum RequestMethodType
+    public enum RequestMethodType
     {
         GET, PUT, POST, PATCH, DELETE, HEAD, OPTIONS
     }
 
     internal static class RequestTypeExtensions
     {
-        public static string GetTypeRegex(this Type type, string name = "")
+        internal static string GetTypeRegex(this Type type, string name = "")
         {
             return $"(?<{name}>{GetTypeRegexGroup(type)})";
         }
@@ -207,13 +221,14 @@ namespace HTTPBackend
             return "";
         }
 
-        public static object GetTypeRegexValue(this Type type, string value)
+        internal static object GetTypeRegexValue(this Type type, string value)
         {
             if (type == typeof(int)) return int.Parse(value);
             if (type == typeof(long)) return long.Parse(value);
             if (type == typeof(uint)) return uint.Parse(value);
             if (type == typeof(ulong)) return ulong.Parse(value);
-            return value;
+            if (type == typeof(string)) return value.Normalize();
+            return JsonConvert.DeserializeObject(value, type);
         }
     }
 }

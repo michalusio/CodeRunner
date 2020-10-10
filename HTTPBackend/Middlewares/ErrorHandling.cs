@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HTTPBackend.Middlewares
 {
-    public class ErrorHandling : BaseMiddleware
+    public sealed class ErrorHandling : BaseMiddleware
     {
         public override void ResolveRequest(HttpListenerContext context)
         {
