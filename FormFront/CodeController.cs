@@ -1,14 +1,15 @@
 ﻿using Backend;
+using HTTPBackend.Middlewares;
 using System.Text;
 using System.Windows.Forms;
 
 namespace HTTPBackend
 {
     [Controller("/code/")]
-    public class HttpController : BaseController
+    internal sealed class CodeController : BaseController
     {
         private readonly RichTextBox richTextBoxConsole;
-        public HttpController(ILogger logger, RichTextBox richTextBoxConsole) : base(logger)
+        public CodeController(ILogger logger, RichTextBox richTextBoxConsole) : base(logger)
         {
             this.richTextBoxConsole = richTextBoxConsole;
         }
@@ -32,8 +33,6 @@ namespace HTTPBackend
             {
                 Response.StatusCode = 500;
             }
-
-            Response.Close();
         }
 
         [Request(RequestMethodType.GET, "{userId}")]
@@ -43,6 +42,9 @@ namespace HTTPBackend
 
             if (player == null)
             {
+                var bytes = Encoding.UTF8.GetBytes(Authentication.Data[Response].IsAuthenticated ? "Spoko" : "Nie spoko");
+                Response.OutputStream.Write(bytes, 0, bytes.Length);
+                Response.OutputStream.Flush();
                 Response.StatusCode = 404;
             }
             else
@@ -57,8 +59,6 @@ namespace HTTPBackend
                 Response.OutputStream.Flush();
                 Response.StatusCode = 200;
             }
-
-            Response.Close();
         }
     }
 }

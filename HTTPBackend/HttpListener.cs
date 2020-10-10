@@ -1,24 +1,26 @@
 ﻿using Backend;
+using HTTPBackend.Middlewares;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace HTTPBackend
 {
-    public class HttpListener
+    public sealed class HttpListener
     {
         private const int PORT = 8443;
 
         private readonly System.Net.HttpListener listener;
         private Thread listenerThread;
-        private readonly BaseController responses;
+        private readonly IEnumerable<BaseController> responses;
         private readonly ILogger Logger;
 
-        public HttpListener(BaseController responseController, ILogger logger)
+        public HttpListener(IEnumerable<BaseController> responseControllers, ILogger logger)
         {
             Logger = logger;
             listener = new System.Net.HttpListener();
             listener.Prefixes.Add($"https://localhost:{PORT}/");
-            responses = responseController;
+            responses = responseControllers;
             Logger.OuterLevelWrite("HTTP", () => Logger.Log($"Awaiting requests on port {PORT}"));
         }
 
@@ -42,11 +44,14 @@ namespace HTTPBackend
                 var url = context.Request.RawUrl;
                 try
                 {
-                    Logger.OuterLevelWrite("HTTP", () => Logger.Log($"Got request: {method};{context.Request.RawUrl}"));
-                    if (!responses.ResolveRequest(context))
+                    Logger.OuterLevelWrite("HTTP", () =>
                     {
-                        Logger.OuterLevelWrite("HTTP", () => Logger.Log($"Web Error: Cannot get response action for ({method};{url})"));
-                    }
+                        Logger.Log($"Got request: {method} | {context.Request.RawUrl.Replace(Environment.NewLine, "")}");
+                        foreach(var controller in responses)
+                        {
+                            if (controller.RunController(context)) return;
+                        }
+                    });
                 }
                 catch (Exception e)
                 {

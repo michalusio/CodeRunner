@@ -1,5 +1,6 @@
 ﻿using Backend;
 using HTTPBackend;
+using HTTPBackend.Middlewares;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -32,7 +33,14 @@ namespace FormFront
             mainConsoleWriter = new TreeLogWriter(treeView1);
             boardDrawer = new BoardDrawer();
             Console.SetOut(mainConsoleWriter);
-            httpListener = new HttpListener(new HttpController(mainConsoleWriter, richTextBoxConsole), mainConsoleWriter);
+            HTTPService.RegisterMiddleware<ErrorHandling>();
+            HTTPService.RegisterMiddleware<Authentication>();
+            var controllers = new BaseController[]
+            {
+                new AccountController(mainConsoleWriter),
+                new CodeController(mainConsoleWriter, richTextBoxConsole)
+            };
+            httpListener = new HttpListener(controllers, mainConsoleWriter);
         }
 
         private void RebindList()
