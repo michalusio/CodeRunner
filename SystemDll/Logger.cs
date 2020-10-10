@@ -10,7 +10,7 @@ namespace SystemDll
 
         public static void Log(object text)
         {
-            CurrentConsole.WriteLine($"{DateTime.Now} [{CurrentPlayer?.PlayerId ?? "ERROR"}] - {text}");
+            CurrentConsole.WriteLine($"{DateTime.Now} [{CurrentPlayer?.PlayerId.ToString("00000000") ?? "ERROR"}] - {text}");
         }
     }
 }

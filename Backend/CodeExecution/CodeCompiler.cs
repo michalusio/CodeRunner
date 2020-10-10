@@ -12,27 +12,24 @@ namespace Backend.CodeExecution
     {
         private static readonly CSharpParseOptions parseOptions = CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.CSharp8);
 
-        private static readonly CSharpCompilationOptions compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
+        private static readonly CSharpCompilationOptions compilationOptions = new CSharpCompilationOptions(
+            OutputKind.DynamicallyLinkedLibrary,
             optimizationLevel: OptimizationLevel.Release,
             assemblyIdentityComparer: DesktopAssemblyIdentityComparer.Default,
             checkOverflow: true
         );
 
-        private static readonly AssemblyMetadata OwnAssembly = AssemblyMetadata.CreateFromFile(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "SystemDll.dll"));
+        private static readonly AssemblyMetadata ownAssembly = AssemblyMetadata.CreateFromFile(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "SystemDll.dll"));
 
-        internal static readonly MetadataReference[] references = new MetadataReference[]
+        private static readonly MetadataReference[] references = new MetadataReference[]
         {
-            //AssemblyMetadata.CreateFromFile(typeof(object).Assembly.Location).GetReference(),
             AssemblyMetadata.CreateFromFile(typeof(System.Runtime.AssemblyTargetedPatchBandAttribute).Assembly.Location).GetReference(),
-            OwnAssembly.GetReference()
+            ownAssembly.GetReference()
         };
 
         static CodeCompiler()
         {
-            if (!Directory.Exists("./PlayerDLLs"))
-            {
-                Directory.CreateDirectory("./PlayerDLLs");
-            }
+            Directory.CreateDirectory("./PlayerDLLs");
         }
 
         public static bool Compile(CSharpCompilation compilation)
@@ -41,13 +38,14 @@ namespace Backend.CodeExecution
 
             if (!result.Success)
             {
-                Console.WriteLine("Compilation done with errors.");
+                Console.WriteLine("Compilation done with errors:");
 
-                var failures = result.Diagnostics.Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
+                var failures = result.Diagnostics
+                    .Where(diagnostic => diagnostic.IsWarningAsError || diagnostic.Severity == DiagnosticSeverity.Error);
 
                 foreach (var diagnostic in failures)
                 {
-                    Console.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                    Console.WriteLine($"{diagnostic.Id}: {diagnostic.GetMessage()}");
                 }
 
                 return false;
@@ -58,15 +56,11 @@ namespace Backend.CodeExecution
             return true;
         }
 
-        public static CSharpCompilation Parse(ulong playerId, params string[] sourceCode)
+        public static CSharpCompilation Parse(ulong playerId, IEnumerable<string> sourceCode)
         {
-            var parses = new List<SyntaxTree>();
-            foreach (var source in sourceCode)
-            {
-                var codeString = SourceText.From(source);
-
-                parses.Add(SyntaxFactory.ParseSyntaxTree(codeString, parseOptions));
-            }
+            var parses = sourceCode
+                .Select(code => SourceText.From(code))
+                .Select(source => SyntaxFactory.ParseSyntaxTree(source, parseOptions));
 
             return CSharpCompilation.Create($"Player{playerId}Assembly",
                 parses,

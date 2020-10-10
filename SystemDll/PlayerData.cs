@@ -5,8 +5,7 @@ namespace SystemDll
 {
     public class PlayerData : MarshalByRefObject
     {
-        public string PlayerId => PlayerIdULong.ToString("00000000");
-        public ulong PlayerIdULong { get; private set; }
+        public ulong PlayerId { get; }
 
         public IReadOnlyList<Robot> Robots => robots.AsReadOnly();
 
@@ -14,7 +13,7 @@ namespace SystemDll
 
         internal PlayerData(ulong id)
         {
-            PlayerIdULong = id;
+            PlayerId = id;
             robots = new List<Robot> { new Robot() };
         }
     }

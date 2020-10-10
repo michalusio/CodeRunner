@@ -55,7 +55,7 @@ namespace FormFront
             if (chosenData.ConsoleStream is RichTextBoxWriter currentWriter)
             {
                 currentWriter.Open = true;
-                SelectedPlayer = chosenData.PlayerData.PlayerIdULong;
+                SelectedPlayer = chosenData.PlayerData.PlayerId;
             }
         }
 
