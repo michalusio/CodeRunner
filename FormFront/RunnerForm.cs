@@ -1,8 +1,9 @@
 ﻿using Backend;
+using DBLayer;
+using FormFront.Controllers;
 using HTTPBackend;
 using HTTPBackend.Middlewares;
 using System;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FormFront
@@ -12,7 +13,7 @@ namespace FormFront
         private readonly HttpListener httpListener;
         private readonly BoardDrawer boardDrawer;
         private readonly TreeLogWriter mainConsoleWriter;
-        private ulong SelectedPlayer;
+        private Guid SelectedPlayer;
         private int runId;
 
         protected override CreateParams CreateParams
@@ -35,6 +36,7 @@ namespace FormFront
             Console.SetOut(mainConsoleWriter);
             HTTPService.RegisterMiddleware<ErrorHandling>();
             HTTPService.RegisterMiddleware<Authentication>();
+            HTTPService.RegisterMiddleware<DBMiddleware>();
             var controllers = new BaseController[]
             {
                 new AccountController(mainConsoleWriter),
@@ -52,7 +54,7 @@ namespace FormFront
 
         private void ListBoxUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var item = listBoxUsers.SelectedItem as ulong?;
+            var item = listBoxUsers.SelectedItem as Guid?;
             if (!item.HasValue) return;
             var chosenData = PlayerController.Get(item.Value);
             if (chosenData == null) return;

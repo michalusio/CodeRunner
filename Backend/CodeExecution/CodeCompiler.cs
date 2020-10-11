@@ -56,7 +56,7 @@ namespace Backend.CodeExecution
             return true;
         }
 
-        public static CSharpCompilation Parse(ulong playerId, IEnumerable<string> sourceCode)
+        public static CSharpCompilation Parse(Guid playerId, IEnumerable<string> sourceCode)
         {
             var parses = sourceCode
                 .Select(code => SourceText.From(code))

@@ -49,10 +49,12 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="BoardDrawer.cs" />
-    <Compile Include="CodeController.cs" />
+    <Compile Include="Controllers\CodeController.cs" />
+    <Compile Include="DBMiddleware.cs" />
     <Compile Include="DTOs\LoginDTO.cs" />
+    <Compile Include="DTOs\RegisterDTO.cs" />
     <Compile Include="RunnerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +95,10 @@
       <Project>{4d0e19c4-6094-4c31-9f68-910fc0f1c01d}</Project>
       <Name>Backend</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DBLayer\DBLayer.csproj">
+      <Project>{570c3db8-036e-45f7-a16d-1274a7225efd}</Project>
+      <Name>DBLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HTTPBackend\HTTPBackend.csproj">
       <Project>{dd91cf31-46b1-4eb4-9988-5bd22ea22fb6}</Project>
       <Name>HTTPBackend</Name>
@@ -103,46 +109,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net">
+      <Version>0.1.0</Version>
+    </PackageReference>
     <PackageReference Include="ColorMine">
       <Version>1.1.3</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
-      <Version>3.3.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.Common">
-      <Version>3.7.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
-      <Version>3.7.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Buffers">
-      <Version>4.5.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Collections.Immutable">
-      <Version>1.7.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Memory">
-      <Version>4.5.4</Version>
-    </PackageReference>
-    <PackageReference Include="System.Numerics.Vectors">
-      <Version>4.5.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Reflection.Metadata">
-      <Version>1.8.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
-      <Version>4.7.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime.Loader">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Text.Encoding.CodePages">
-      <Version>4.7.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Threading.Tasks.Extensions">
-      <Version>4.5.4</Version>
+    <PackageReference Include="EntityFramework">
+      <Version>6.4.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

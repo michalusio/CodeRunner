@@ -29,7 +29,7 @@ namespace Backend.CodeExecution
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        internal static AppDomain GetExecutor(ulong playerId)
+        internal static AppDomain GetExecutor(Guid playerId)
         {
             var playerAppDomain = AppDomain.CreateDomain($"Player {playerId}", null, new AppDomainSetup
             {

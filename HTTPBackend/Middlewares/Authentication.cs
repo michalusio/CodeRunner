@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net;
 
 namespace HTTPBackend.Middlewares
@@ -12,7 +13,7 @@ namespace HTTPBackend.Middlewares
         public static IReadOnlyDictionary<HttpListenerResponse, Session> Data => new ReadOnlyDictionary<HttpListenerResponse, Session>(data);
         private static readonly Dictionary<HttpListenerResponse, Session> data = new Dictionary<HttpListenerResponse, Session>();
 
-        private static readonly List<(Guid Guid, Dictionary<string, string> Data)> sessionNonces = new List<(Guid, Dictionary<string, string>)>();
+        private static readonly List<(Guid Guid, Dictionary<string, object> Data)> sessionNonces = new List<(Guid, Dictionary<string, object>)>();
 
         internal static void RemoveNonce(string token)
         {
@@ -24,6 +25,15 @@ namespace HTTPBackend.Middlewares
             data[context.Response] = new Session(context.Request.Cookies[SessionCookieName], sessionNonces);
             try
             {
+                if (ControllerAttributes.OfType<RequiresAuthorizationAttribute>().Any())
+                {
+                    if (!Data[context.Response].IsAuthenticated)
+                    {
+                        context.Response.StatusCode = 401;
+                        context.Response.Close();
+                        return;
+                    }
+                }
                 Next.ResolveRequest(context);
             }
             finally
@@ -35,7 +45,7 @@ namespace HTTPBackend.Middlewares
         public static void SignIn(HttpListenerResponse response)
         {
             var nonce = Guid.NewGuid();
-            sessionNonces.Add((nonce, new Dictionary<string, string>()));
+            sessionNonces.Add((nonce, new Dictionary<string, object>()));
             var cookie = new Cookie
             {
                 Name = SessionCookieName,
@@ -45,6 +55,7 @@ namespace HTTPBackend.Middlewares
                 Value = nonce.ToString()
             };
             response.SetCookie(cookie);
+            data[response] = new Session(cookie, sessionNonces);
         }
 
         public static void SignOut(HttpListenerResponse response)
@@ -59,12 +70,17 @@ namespace HTTPBackend.Middlewares
         }
     }
 
+    public sealed class RequiresAuthorizationAttribute : Attribute
+    {
+
+    }
+
     public class Session
     {
         public bool IsAuthenticated { get; }
-        public Dictionary<string, string> SessionData { get; }
+        public Dictionary<string, object> SessionData { get; }
 
-        internal Session(Cookie sessionCookie, List<(Guid Guid, Dictionary<string, string> Data)> nonces)
+        internal Session(Cookie sessionCookie, List<(Guid Guid, Dictionary<string, object> Data)> nonces)
         {
             if (sessionCookie == null)
             {

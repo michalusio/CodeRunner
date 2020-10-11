@@ -1,7 +1,6 @@
 ﻿using Backend;
 using Newtonsoft.Json;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,7 +18,7 @@ namespace HTTPBackend
 
         protected HttpListenerResponse Response { get; private set; }
         protected ILogger Logger { get; private set; }
-        public IMiddleware Next { private get;  set; }
+        public IMiddleware Next { private get; set; }
 
         protected BaseController(ILogger logger)
         {
@@ -78,7 +77,7 @@ namespace HTTPBackend
         private Regex regex;
         private (string Name, Type Type) body;
 
-        public RequestAttribute(RequestMethodType methodType, string requestUrl)
+        public RequestAttribute(RequestMethodType methodType, string requestUrl = "")
         {
             MethodType = methodType;
             RequestUrl = requestUrl;
@@ -111,7 +110,7 @@ namespace HTTPBackend
             regex = new Regex(regexString.ToString(), RegexOptions.Compiled);
 
             logger.OuterLevelWrite("HTTP", () =>
-                logger.Log($"Registered endpoint: {MethodType} | {regex}" + ((body.Name != null ? $" with body: {body.Name}" : "") +  $" [{MiddlewareStack.Count} Middlewares]"))
+                logger.Log($"Registered endpoint: {MethodType} | {regex}" + ((body.Name != null ? $" with body: {body.Name}" : "") + $" [{MiddlewareStack.Count} Middlewares]"))
             );
             return this;
         }
@@ -122,9 +121,20 @@ namespace HTTPBackend
             MiddlewareStack = HTTPService.GetMiddlewareStack().Concat(methodInfo.GetCustomAttributes<AttributeMiddleware>()).ToList();
             MiddlewareStack.Add(controller);
 
+            var methodAttributes = methodInfo.GetCustomAttributes();
+
             for (int i = 0; i < MiddlewareStack.Count - 1; i++)
             {
-                MiddlewareStack[i].Next = MiddlewareStack[i + 1];
+                var middleware = MiddlewareStack[i];
+                middleware.Next = MiddlewareStack[i + 1];
+                if (middleware is BaseMiddleware bm)
+                {
+                    bm.ControllerAttributes = methodAttributes;
+                }
+                else if (middleware is AttributeMiddleware am)
+                {
+                    am.ControllerAttributes = methodAttributes;
+                }
             }
 
             return this;
@@ -218,7 +228,7 @@ namespace HTTPBackend
             {
                 return ".*?";
             }
-            return "";
+            return "{.*?}";
         }
 
         internal static object GetTypeRegexValue(this Type type, string value)
@@ -231,4 +241,5 @@ namespace HTTPBackend
             return JsonConvert.DeserializeObject(value, type);
         }
     }
+
 }

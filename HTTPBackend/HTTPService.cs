@@ -8,7 +8,7 @@ namespace HTTPBackend
     {
         private static readonly List<(Type type, object[] args)> registeredMiddlewares = new List<(Type type, object[] args)>();
 
-        public static void RegisterMiddleware<T>(params object[] args) where T: BaseMiddleware
+        public static void RegisterMiddleware<T>(params object[] args) where T : BaseMiddleware
         {
             registeredMiddlewares.Add((typeof(T), args));
         }

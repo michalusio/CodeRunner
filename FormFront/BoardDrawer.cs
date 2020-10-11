@@ -12,9 +12,9 @@ namespace FormFront
         private const int CELL_SIZE = 32;
         private const int CELL_SIZE_HALF = CELL_SIZE / 2;
 
-        private static readonly Dictionary<ulong, (Rgb, SolidBrush, Pen)> PlayerColorData = new Dictionary<ulong, (Rgb, SolidBrush, Pen)>();
+        private static readonly Dictionary<Guid, (Rgb, SolidBrush, Pen)> PlayerColorData = new Dictionary<Guid, (Rgb, SolidBrush, Pen)>();
 
-        private static SolidBrush GetPlayerBrush(ulong id)
+        private static SolidBrush GetPlayerBrush(Guid id)
         {
             if (PlayerColorData.TryGetValue(id, out var playerColorData))
             {
@@ -22,7 +22,7 @@ namespace FormFront
             }
             else
             {
-                var playerColor = new Hsv { H = (Math.E * id * 90) % 360, S = 1, V = 1 }.To<Rgb>();
+                var playerColor = new Hsv { H = id.GetHashCode() % 360, S = 1, V = 1 }.To<Rgb>();
                 var playerBrush = new SolidBrush(ToColor(playerColor));
                 var playerPen = new Pen(playerBrush, 1f / CELL_SIZE);
                 PlayerColorData[id] = (playerColor, playerBrush, playerPen);
@@ -44,7 +44,7 @@ namespace FormFront
             g.Transform = matrix;
         }
 
-        private static void DrawPlayer(Graphics g, ulong id)
+        private static void DrawPlayer(Graphics g, Guid id)
         {
             var playerData = PlayerController.Get(id);
             var playerBrush = GetPlayerBrush(id);
@@ -59,7 +59,7 @@ namespace FormFront
             g.FillEllipse(playerBrush, robot.X - 0.5f, robot.Y - 0.5f, 1, 1);
         }
 
-        private void PrepareDrawGrid(Graphics g, Size size)
+        private static void PrepareDrawGrid(Graphics g, Size size)
         {
             g.TranslateTransform(size.Width / 2 - CELL_SIZE_HALF, size.Height / 2 - CELL_SIZE_HALF);
             for (int i = -32; i <= 32; i++)
