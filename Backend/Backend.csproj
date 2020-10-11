@@ -93,9 +93,6 @@
     <PackageReference Include="System.Text.Encoding.CodePages">
       <Version>4.7.1</Version>
     </PackageReference>
-    <PackageReference Include="System.Threading.Tasks.Extensions">
-      <Version>4.5.4</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <FluentValidationExcludedCultures Include="be;cs;cs-CZ;da;de;es;fa;fi;fr;ja;it;ko;mk;nl;pl;pt;ru;sv;tr;uk;zh-CN;zh-CHS;zh-CHT;pt-BR;zh-Hans;zh-Hant">

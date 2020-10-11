@@ -1,9 +1,11 @@
 ﻿using Backend;
+using HTTPBackend;
 using HTTPBackend.Middlewares;
+using System;
 using System.Text;
 using System.Windows.Forms;
 
-namespace HTTPBackend
+namespace FormFront
 {
     [Controller("/code/")]
     internal sealed class CodeController : BaseController
@@ -14,14 +16,21 @@ namespace HTTPBackend
             this.richTextBoxConsole = richTextBoxConsole;
         }
 
-        [Request(RequestMethodType.PUT, "{userId}")]
-        public void CodeInput(ulong userId, [RequestBody] string body)
+        [RequiresAuthorization]
+        [Request(RequestMethodType.PUT, "")]
+        public void CodeInput([RequestBody] string body)
         {
-            var player = PlayerController.Get(userId);
+            if (!Authentication.Data[Response].SessionData.TryGetValue("PlayerID", out object playerIdObj) || !(playerIdObj is Guid playerId))
+            {
+                Response.StatusCode = 403;
+                return;
+            }
+
+            var player = PlayerController.Get(playerId);
 
             if (player == null)
             {
-                player = PlayerController.Create(userId, new RichTextBoxWriter(richTextBoxConsole));
+                player = PlayerController.Create(playerId, new RichTextBoxWriter(richTextBoxConsole));
                 Response.StatusCode = 201;
             }
             else
@@ -35,16 +44,22 @@ namespace HTTPBackend
             }
         }
 
-        [Request(RequestMethodType.GET, "{userId}")]
-        public void CodeGet(ulong userId)
+        [RequiresAuthorization]
+        [Request(RequestMethodType.GET)]
+        public void CodeGet()
         {
-            var player = PlayerController.Get(userId);
+            if (!Authentication.Data[Response].SessionData.TryGetValue("PlayerID", out object playerIdObj) || !(playerIdObj is Guid playerId))
+            {
+                Response.StatusCode = 403;
+                return;
+            }
 
+            var player = PlayerController.Get(playerId);
+
+            byte[] bytes;
             if (player == null)
             {
-                var bytes = Encoding.UTF8.GetBytes(Authentication.Data[Response].IsAuthenticated ? "Spoko" : "Nie spoko");
-                Response.OutputStream.Write(bytes, 0, bytes.Length);
-                Response.OutputStream.Flush();
+                bytes = Encoding.UTF8.GetBytes("No code uploaded yet!");
                 Response.StatusCode = 404;
             }
             else
@@ -54,11 +69,12 @@ namespace HTTPBackend
                 {
                     codeBuilder.AppendLine(code);
                 }
-                var bytes = Encoding.UTF8.GetBytes(codeBuilder.ToString());
-                Response.OutputStream.Write(bytes, 0, bytes.Length);
-                Response.OutputStream.Flush();
+                bytes = Encoding.UTF8.GetBytes(codeBuilder.ToString());
                 Response.StatusCode = 200;
             }
+
+            Response.OutputStream.Write(bytes, 0, bytes.Length);
+            Response.OutputStream.Flush();
         }
     }
 }

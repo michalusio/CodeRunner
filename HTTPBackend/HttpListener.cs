@@ -1,5 +1,4 @@
 ﻿using Backend;
-using HTTPBackend.Middlewares;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -47,7 +46,7 @@ namespace HTTPBackend
                     Logger.OuterLevelWrite("HTTP", () =>
                     {
                         Logger.Log($"Got request: {method} | {context.Request.RawUrl.Replace(Environment.NewLine, "")}");
-                        foreach(var controller in responses)
+                        foreach (var controller in responses)
                         {
                             if (controller.RunController(context)) return;
                         }

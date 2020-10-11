@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using SystemDll;
 
@@ -6,11 +7,11 @@ namespace Backend
 {
     public static class PlayerController
     {
-        public static ImmutableList<ulong> PlayerIds => playerData.Keys.ToImmutableList();
+        public static ImmutableList<Guid> PlayerIds => playerData.Keys.ToImmutableList();
 
-        private static readonly Dictionary<ulong, FullPlayerData> playerData = new Dictionary<ulong, FullPlayerData>();
+        private static readonly Dictionary<Guid, FullPlayerData> playerData = new Dictionary<Guid, FullPlayerData>();
 
-        public static FullPlayerData Create(ulong id, RichTextBoxWriter stream)
+        public static FullPlayerData Create(Guid id, RichTextBoxWriter stream)
         {
             if (playerData.ContainsKey(id)) return playerData[id];
 
@@ -18,7 +19,7 @@ namespace Backend
             return playerData[id];
         }
 
-        public static FullPlayerData Get(ulong id)
+        public static FullPlayerData Get(Guid id)
         {
             if (!playerData.ContainsKey(id))
             {
