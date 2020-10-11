@@ -55,6 +55,7 @@ namespace HTTPBackend.Middlewares
                 Value = nonce.ToString()
             };
             response.SetCookie(cookie);
+            data[response] = new Session(cookie, sessionNonces);
         }
 
         public static void SignOut(HttpListenerResponse response)

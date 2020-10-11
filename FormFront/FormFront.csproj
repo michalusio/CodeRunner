@@ -49,9 +49,9 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="BoardDrawer.cs" />
-    <Compile Include="CodeController.cs" />
+    <Compile Include="Controllers\CodeController.cs" />
     <Compile Include="DTOs\LoginDTO.cs" />
     <Compile Include="RunnerForm.cs">
       <SubType>Form</SubType>
@@ -92,6 +92,10 @@
     <ProjectReference Include="..\Backend\Backend.csproj">
       <Project>{4d0e19c4-6094-4c31-9f68-910fc0f1c01d}</Project>
       <Name>Backend</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBLayer\DBLayer.csproj">
+      <Project>{570c3db8-036e-45f7-a16d-1274a7225efd}</Project>
+      <Name>DBLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\HTTPBackend\HTTPBackend.csproj">
       <Project>{dd91cf31-46b1-4eb4-9988-5bd22ea22fb6}</Project>

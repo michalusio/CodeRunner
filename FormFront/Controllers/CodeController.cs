@@ -5,7 +5,7 @@ using System;
 using System.Text;
 using System.Windows.Forms;
 
-namespace FormFront
+namespace FormFront.Controllers
 {
     [Controller("/code/")]
     internal sealed class CodeController : BaseController
