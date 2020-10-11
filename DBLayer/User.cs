@@ -12,10 +12,11 @@ namespace DBLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class Users
+    public partial class User
     {
         public System.Guid Id { get; set; }
         public string Username { get; set; }
         public byte[] PasswordHash { get; set; }
+        public string Email { get; set; }
     }
 }

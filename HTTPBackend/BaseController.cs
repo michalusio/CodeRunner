@@ -228,7 +228,7 @@ namespace HTTPBackend
             {
                 return ".*?";
             }
-            return "";
+            return "{.*?}";
         }
 
         internal static object GetTypeRegexValue(this Type type, string value)

@@ -1,4 +1,6 @@
 ﻿using Backend;
+using DBLayer;
+using FormFront.Controllers;
 using HTTPBackend;
 using HTTPBackend.Middlewares;
 using System;
@@ -34,6 +36,7 @@ namespace FormFront
             Console.SetOut(mainConsoleWriter);
             HTTPService.RegisterMiddleware<ErrorHandling>();
             HTTPService.RegisterMiddleware<Authentication>();
+            HTTPService.RegisterMiddleware<DBMiddleware>();
             var controllers = new BaseController[]
             {
                 new AccountController(mainConsoleWriter),
