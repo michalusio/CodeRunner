@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace FormFront
+namespace FormServer
 {
     internal class TreeLogWriter : TextWriter, ILogger
     {

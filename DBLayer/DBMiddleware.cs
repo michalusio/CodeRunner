@@ -1,12 +1,11 @@
-﻿using DBLayer;
-using HTTPBackend;
+﻿using HTTPBackend;
 using System.Net;
 
-namespace FormFront
+namespace DBLayer
 {
-    internal class DBMiddleware : BaseMiddleware
+    public class DBMiddleware : BaseMiddleware
     {
-        public static CodeRunnerEntities Context;
+        public static CodeRunnerEntities Context { get; private set; }
 
         public override void ResolveRequest(HttpListenerContext context)
         {

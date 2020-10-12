@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormFront", "FormFront\FormFront.csproj", "{B435A662-B3DA-4F0F-AD99-0DC4A55368B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormServer", "FormServer\FormServer.csproj", "{B435A662-B3DA-4F0F-AD99-0DC4A55368B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{4D0E19C4-6094-4C31-9F68-910FC0F1C01D}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTPBackend", "HTTPBackend\HTTPBackend.csproj", "{DD91CF31-46B1-4EB4-9988-5BD22EA22FB6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBLayer", "DBLayer\DBLayer.csproj", "{570C3DB8-036E-45F7-A16D-1274A7225EFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormClient", "FormClient\FormClient.csproj", "{ADA5F47A-6F9A-44D0-A32A-D5868EADA1E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{570C3DB8-036E-45F7-A16D-1274A7225EFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{570C3DB8-036E-45F7-A16D-1274A7225EFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{570C3DB8-036E-45F7-A16D-1274A7225EFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADA5F47A-6F9A-44D0-A32A-D5868EADA1E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADA5F47A-6F9A-44D0-A32A-D5868EADA1E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADA5F47A-6F9A-44D0-A32A-D5868EADA1E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADA5F47A-6F9A-44D0-A32A-D5868EADA1E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

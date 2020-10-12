@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace FormFront
+namespace FormClient
 {
     static class Program
     {
@@ -13,7 +13,7 @@ namespace FormFront
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new RunnerForm());
+            Application.Run(new Form1());
         }
     }
 }

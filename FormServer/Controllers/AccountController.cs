@@ -1,12 +1,12 @@
 ﻿using Backend;
 using DBLayer;
-using FormFront.DTOs;
+using FormServer.DTOs;
 using HTTPBackend;
 using HTTPBackend.Middlewares;
 using System.Linq;
 using System.Text;
 
-namespace FormFront.Controllers
+namespace FormServer.Controllers
 {
     [Controller("/account/")]
     internal sealed class AccountController : BaseController

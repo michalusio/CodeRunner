@@ -1,4 +1,4 @@
-﻿namespace FormFront
+﻿namespace FormServer
 {
     partial class RunnerForm
     {

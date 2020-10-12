@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using SystemDll;
 
-namespace FormFront
+namespace FormServer
 {
     internal class BoardDrawer
     {
