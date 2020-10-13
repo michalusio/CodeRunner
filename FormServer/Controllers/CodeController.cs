@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace FormServer.Controllers
 {
-    [Controller("/code/")]
+    [Controller("/code")]
     internal sealed class CodeController : BaseController
     {
         private readonly RichTextBox richTextBoxConsole;
