@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTTPBackend", "HTTPBackend\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBLayer", "DBLayer\DBLayer.csproj", "{570C3DB8-036E-45F7-A16D-1274A7225EFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormClient", "FormClient\FormClient.csproj", "{ADA5F47A-6F9A-44D0-A32A-D5868EADA1E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormClient", "FormClient\FormClient.csproj", "{F390FE05-E081-4D73-A66B-3D3594391199}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{570C3DB8-036E-45F7-A16D-1274A7225EFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{570C3DB8-036E-45F7-A16D-1274A7225EFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{570C3DB8-036E-45F7-A16D-1274A7225EFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ADA5F47A-6F9A-44D0-A32A-D5868EADA1E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ADA5F47A-6F9A-44D0-A32A-D5868EADA1E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ADA5F47A-6F9A-44D0-A32A-D5868EADA1E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ADA5F47A-6F9A-44D0-A32A-D5868EADA1E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F390FE05-E081-4D73-A66B-3D3594391199}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F390FE05-E081-4D73-A66B-3D3594391199}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F390FE05-E081-4D73-A66B-3D3594391199}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F390FE05-E081-4D73-A66B-3D3594391199}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
