@@ -82,7 +82,7 @@ namespace FormServer
 
         private void TimerBoard_Tick(object sender, EventArgs e)
         {
-            panel3.Invalidate();
+            pictureBox1.Invalidate();
         }
 
         private void TabControl1_TabIndexChanged(object sender, EventArgs e)
@@ -90,14 +90,14 @@ namespace FormServer
             timerBoard.Enabled = (tabControl1.TabIndex == 2);
         }
 
-        private void Panel3_Paint(object sender, PaintEventArgs e)
-        {
-            boardDrawer.Paint(e.Graphics, e.ClipRectangle.Size);
-        }
-
         private void RunnerForm_Load(object sender, EventArgs e)
         {
             httpListener.StartListener();
+        }
+
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            boardDrawer.Paint(e.Graphics, e.ClipRectangle.Size);
         }
     }
 }

@@ -31,16 +31,16 @@
             this.components = new System.ComponentModel.Container();
             this.richTextBoxConsole = new System.Windows.Forms.RichTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.checkBoxAutoRun = new System.Windows.Forms.CheckBox();
             this.listBoxUsers = new System.Windows.Forms.ListBox();
+            this.checkBoxAutoRun = new System.Windows.Forms.CheckBox();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.timerBoard = new System.Windows.Forms.Timer(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -49,6 +49,7 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // richTextBoxConsole
@@ -79,17 +80,6 @@
             this.splitContainer1.SplitterDistance = 688;
             this.splitContainer1.TabIndex = 1;
             // 
-            // checkBoxAutoRun
-            // 
-            this.checkBoxAutoRun.AutoSize = true;
-            this.checkBoxAutoRun.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkBoxAutoRun.Location = new System.Drawing.Point(0, 0);
-            this.checkBoxAutoRun.Name = "checkBoxAutoRun";
-            this.checkBoxAutoRun.Size = new System.Drawing.Size(408, 17);
-            this.checkBoxAutoRun.TabIndex = 7;
-            this.checkBoxAutoRun.Text = "AutoRun";
-            this.checkBoxAutoRun.UseVisualStyleBackColor = true;
-            // 
             // listBoxUsers
             // 
             this.listBoxUsers.DisplayMember = "Value";
@@ -100,6 +90,17 @@
             this.listBoxUsers.TabIndex = 3;
             this.listBoxUsers.ValueMember = "Key";
             this.listBoxUsers.SelectedIndexChanged += new System.EventHandler(this.ListBoxUsers_SelectedIndexChanged);
+            // 
+            // checkBoxAutoRun
+            // 
+            this.checkBoxAutoRun.AutoSize = true;
+            this.checkBoxAutoRun.Dock = System.Windows.Forms.DockStyle.Top;
+            this.checkBoxAutoRun.Location = new System.Drawing.Point(0, 0);
+            this.checkBoxAutoRun.Name = "checkBoxAutoRun";
+            this.checkBoxAutoRun.Size = new System.Drawing.Size(408, 17);
+            this.checkBoxAutoRun.TabIndex = 7;
+            this.checkBoxAutoRun.Text = "AutoRun";
+            this.checkBoxAutoRun.UseVisualStyleBackColor = true;
             // 
             // treeView1
             // 
@@ -152,7 +153,7 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.panel3);
+            this.tabPage3.Controls.Add(this.pictureBox1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(1106, 548);
@@ -160,20 +161,21 @@
             this.tabPage3.Text = "Board";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // panel3
-            // 
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1106, 548);
-            this.panel3.TabIndex = 0;
-            this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.Panel3_Paint);
-            // 
             // timerBoard
             // 
             this.timerBoard.Enabled = true;
             this.timerBoard.Interval = 50;
             this.timerBoard.Tick += new System.EventHandler(this.TimerBoard_Tick);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(1106, 548);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
             // 
             // RunnerForm
             // 
@@ -194,6 +196,7 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -211,7 +214,7 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Timer timerBoard;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
