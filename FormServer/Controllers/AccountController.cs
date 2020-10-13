@@ -8,16 +8,20 @@ using System.Text;
 
 namespace FormServer.Controllers
 {
-    [Controller("/account/")]
+    [Controller("/account")]
     internal sealed class AccountController : BaseController
     {
         public AccountController(ILogger logger) : base(logger)
         {
         }
 
-        [Request(RequestMethodType.POST, "login")]
+        [Request(RequestMethodType.POST, "/login")]
         public void LogIn([RequestBody] LoginDTO loginData)
         {
+            foreach(var usr in DBMiddleware.Context.Users)
+            {
+                System.Console.WriteLine(usr.Email);
+            }
             if (DBMiddleware.Context.Users.FirstOrDefault(u => u.Email == loginData.Email) is User user)
             {
                 if (BCrypt.Net.BCrypt.Verify(loginData.Password, Encoding.ASCII.GetString(user.PasswordHash)))
@@ -32,13 +36,13 @@ namespace FormServer.Controllers
         }
 
         [RequiresAuthorization]
-        [Request(RequestMethodType.POST, "logout")]
+        [Request(RequestMethodType.POST, "/logout")]
         public void LogOut()
         {
             Authentication.SignOut(Response);
         }
 
-        [Request(RequestMethodType.POST, "register")]
+        [Request(RequestMethodType.POST, "/register")]
         public void Register([RequestBody] RegisterDTO registerData)
         {
             if (DBMiddleware.Context.Users.FirstOrDefault(u => u.Email == registerData.Email || u.Username == registerData.Username) is User user)
@@ -50,6 +54,7 @@ namespace FormServer.Controllers
 
             user = new User
             {
+                Id = new System.Guid(),
                 Username = registerData.Username,
                 Email = registerData.Email,
                 PasswordHash = Encoding.ASCII.GetBytes(BCrypt.Net.BCrypt.HashPassword(registerData.Password, 12))
