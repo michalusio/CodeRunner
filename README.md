@@ -7,6 +7,7 @@ To use the Code runner, you have to register a user, log in using the credential
 
 ##### To register:
 > POST https://<ip>:8443/account/register
+  
 The body of the message has to be a JSON like this:
 ```
 {
@@ -19,6 +20,7 @@ The server will respond with 201 Created if the account is succesfully created.
   
 ##### To log in:
 > POST https://<ip>:8443/account/login
+  
 The body of the message has to be a JSON like this:
 ```
 {
@@ -30,6 +32,7 @@ The server will respond with 200 OK and send a session cookie if the user has su
 
 ##### To send some code to the server:
 > PUT https://<ip>:8443/code
+  
 The body of this message is the code that should be run, like this:
 ```
 public class Program
@@ -46,5 +49,6 @@ Your request has to have the correct session cookie.
 
 ##### To get code back from the server:
 > GET https://<ip>:8443/code
+  
 The server will respond with the code of the currently logged in player (200 OK) or with a 404 Not Found, if the user hasn't send any code yet.
 Your request has to have the correct session cookie.
