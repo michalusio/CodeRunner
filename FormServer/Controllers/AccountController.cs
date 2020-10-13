@@ -54,6 +54,7 @@ namespace FormServer.Controllers
 
             user = new User
             {
+                Id = new System.Guid(),
                 Username = registerData.Username,
                 Email = registerData.Email,
                 PasswordHash = Encoding.ASCII.GetBytes(BCrypt.Net.BCrypt.HashPassword(registerData.Password, 12))
