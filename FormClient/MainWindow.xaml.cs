@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Shell;
+﻿using System;
+using System.Windows;
 
 namespace FormClient
 {

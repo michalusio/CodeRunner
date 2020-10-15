@@ -6,12 +6,11 @@
         xmlns:local="clr-namespace:FormClient"
         mc:Ignorable="d" Height="450" Width="800" Background="White" AllowsTransparency="True" WindowStyle="None">
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="{x:Static SystemParameters.CaptionHeight}"
-                      ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
-                      UseAeroCaptionButtons="False">
-        </WindowChrome>
+        <WindowChrome CaptionHeight="{DynamicResource {x:Static SystemParameters.CaptionHeightKey}}"
+                      UseAeroCaptionButtons="True"
+                      GlassFrameThickness="0 0 0 1" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
     <DockPanel>
-        <Border DockPanel.Dock="Top" Height="{DynamicResource {x:Static SystemParameters.CaptionHeightKey}}" VerticalAlignment="Top" Background="#FF8B8A8A"></Border>
+        <local:WindowTopPanel VerticalAlignment="Top" DockPanel.Dock="Top"/>
     </DockPanel>
 </Window>
