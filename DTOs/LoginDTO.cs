@@ -1,4 +1,4 @@
-﻿namespace FormServer.DTOs
+﻿namespace DTOs
 {
     public class LoginDTO
     {

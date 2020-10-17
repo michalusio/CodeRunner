@@ -50,8 +50,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="BoardDrawer.cs" />
     <Compile Include="Controllers\CodeController.cs" />
-    <Compile Include="DTOs\LoginDTO.cs" />
-    <Compile Include="DTOs\RegisterDTO.cs" />
     <Compile Include="RunnerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +93,10 @@
     <ProjectReference Include="..\DBLayer\DBLayer.csproj">
       <Project>{570c3db8-036e-45f7-a16d-1274a7225efd}</Project>
       <Name>DBLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTOs\DTOs.csproj">
+      <Project>{B4E07D5C-5408-4515-88BE-A3569E9B7B34}</Project>
+      <Name>DTOs</Name>
     </ProjectReference>
     <ProjectReference Include="..\HTTPBackend\HTTPBackend.csproj">
       <Project>{dd91cf31-46b1-4eb4-9988-5bd22ea22fb6}</Project>

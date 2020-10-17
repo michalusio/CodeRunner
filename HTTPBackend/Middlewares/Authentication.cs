@@ -51,7 +51,6 @@ namespace HTTPBackend.Middlewares
                 Name = SessionCookieName,
                 Secure = true,
                 HttpOnly = true,
-                Expires = DateTime.Now.AddHours(1),
                 Value = nonce.ToString()
             };
             response.SetCookie(cookie);

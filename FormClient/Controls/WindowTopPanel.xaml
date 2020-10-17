@@ -1,14 +1,15 @@
-﻿<UserControl x:Class="FormClient.WindowTopPanel"
+﻿<UserControl x:Name="uc" x:Class="FormClient.Controls.WindowTopPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FormClient"
-             mc:Ignorable="d" d:DesignWidth="800" Height="40" Loaded="UserControl_Loaded">
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             mc:Ignorable="d" d:DesignWidth="800" Loaded="UserControl_Loaded">
     <UserControl.Resources>
-        <Image x:Key="CloseIcon" Source="Icons/close.ico"/>
-        <Image x:Key="MinimizeIcon" Source="Icons/minimize.ico"/>
-        <Image x:Key="MaximizeIcon" Source="Icons/maximize.ico"/>
+        <Image x:Key="CloseIcon" Source="../Icons/close.ico"/>
+        <Image x:Key="MinimizeIcon" Source="../Icons/minimize.ico"/>
+        <Image x:Key="MaximizeIcon" Source="../Icons/maximize.ico"/>
         <Style TargetType="{x:Type Button}">
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Width" Value="{DynamicResource {x:Static SystemParameters.IconWidthKey}}"/>
@@ -32,12 +33,12 @@
         <Button x:Name="MaximizeButton"
                 Click="MaximizeButton_Click"
                 ToolTip="Maximize"
-                Content="{StaticResource MaximizeIcon}">
+                Content="{StaticResource MaximizeIcon}" Visibility="{Binding MaximizeBox, ElementName=uc}">
         </Button>
         <Button x:Name="MinimizeButton"
                 Click="MinimizeButton_Click"
                 ToolTip="Minimize"
-                Content="{StaticResource MinimizeIcon}">
+                Content="{StaticResource MinimizeIcon}" Visibility="{Binding MinimizeBox, ElementName=uc}">
         </Button>
     </DockPanel>
 </UserControl>
