@@ -1,6 +1,5 @@
 ﻿using DTOs;
 using Newtonsoft.Json;
-using System;
 using System.Net.Http;
 using System.Windows;
 
@@ -26,7 +25,10 @@ namespace FormClient
             var response = await App.HttpClient.PostAsync(IpBox.Text + "account/login", new StringContent(serializedLoginData));
             if (response.IsSuccessStatusCode)
             {
-
+                App.ServerIp = IpBox.Text;
+                var mainWindow = new MainWindow();
+                mainWindow.Show();
+                Close();
             }
         }
     }

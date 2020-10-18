@@ -51,7 +51,8 @@ namespace HTTPBackend.Middlewares
                 Name = SessionCookieName,
                 Secure = true,
                 HttpOnly = true,
-                Value = nonce.ToString()
+                Value = nonce.ToString(),
+                Path = "/"
             };
             response.SetCookie(cookie);
             data[response] = new Session(cookie, sessionNonces);

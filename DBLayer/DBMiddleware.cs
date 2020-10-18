@@ -20,7 +20,8 @@ namespace DBLayer
                 {
                     Id = Guid.NewGuid(),
                     Email = "admin@admin.admin",
-                    PasswordHash = Encoding.ASCII.GetBytes(BCrypt.Net.BCrypt.HashPassword("admin1", 12))
+                    PasswordHash = Encoding.ASCII.GetBytes(BCrypt.Net.BCrypt.HashPassword("admin1", 12)),
+                    Username = "admin"
                 };
 
                 Context.Users.Add(adminUser);

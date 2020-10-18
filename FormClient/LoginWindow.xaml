@@ -27,8 +27,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Controls:TextBoxWithPlaceholder x:Name="emailBox" Placeholder="Email..." Background="#FF464646" Grid.Row="1" Height="32" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-            <Controls:PasswordBoxWithPlaceholder x:Name="passwordBox" Placeholder="Password..." Background="#FF464646" Grid.Row="3" Height="32" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+            <Controls:TextBoxWithPlaceholder x:Name="emailBox" Placeholder="Email..." Background="#FF464646" Grid.Row="1" Height="32" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Text="admin@admin.admin"/>
+            <Controls:PasswordBoxWithPlaceholder x:Name="passwordBox" Placeholder="Password..." Background="#FF464646" Grid.Row="3" Height="32" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Password="admin"/>
             <Button x:Name="LoginButton" Grid.Row="5" Height="32" Click="LoginButton_Click" Background="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
                 <TextBlock>
                     Log In
