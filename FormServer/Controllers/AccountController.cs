@@ -3,6 +3,7 @@ using DBLayer;
 using DTOs;
 using HTTPBackend;
 using HTTPBackend.Middlewares;
+using System;
 using System.Linq;
 using System.Text;
 
@@ -54,7 +55,7 @@ namespace FormServer.Controllers
 
             user = new User
             {
-                Id = new System.Guid(),
+                Id = Guid.NewGuid(),
                 Username = registerData.Username,
                 Email = registerData.Email,
                 PasswordHash = Encoding.ASCII.GetBytes(BCrypt.Net.BCrypt.HashPassword(registerData.Password, 12))
