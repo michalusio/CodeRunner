@@ -15,26 +15,39 @@
         <Controls:WindowTopPanel VerticalAlignment="Top" DockPanel.Dock="Top" MaximizeBox="Hidden" MinimizeBox="Hidden"/>
         <Grid x:Name="loginScreen" Margin="16">
             <Grid.RowDefinitions>
-                <RowDefinition Height="64"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="64"/>
+                <RowDefinition Height="32"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="32"/>
                 <RowDefinition Height="24"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Controls:TextBoxWithPlaceholder x:Name="emailBox" Placeholder="Email..." Background="#FF464646" Grid.Row="1" Height="32" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Text="admin@admin.admin"/>
-            <Controls:PasswordBoxWithPlaceholder x:Name="passwordBox" Placeholder="Password..." Background="#FF464646" Grid.Row="3" Height="32" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Password="admin"/>
-            <Button x:Name="LoginButton" Grid.Row="5" Height="32" Click="LoginButton_Click" Background="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
-                <TextBlock>
+            <Controls:TextBoxWithPlaceholder x:Name="usernameBox" Placeholder="Username" Grid.Row="0" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Text="admin" Visibility="Collapsed"/>
+            <Controls:TextBoxWithPlaceholder x:Name="emailBox" Placeholder="Email" Grid.Row="2" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Text="admin@admin.admin"/>
+            <Controls:PasswordBoxWithPlaceholder x:Name="passwordBox" Placeholder="Password" Grid.Row="4" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="LoginButton" Height="32" Click="LoginButton_Click" Background="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
+                    <TextBlock>
                     Log In
-                </TextBlock>
-            </Button>
-            <TextBox x:Name="IpBox" Grid.Row="7" Background="#FF363636" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                    </TextBlock>
+                </Button>
+                <Button x:Name="RegisterButton" Grid.Column="1" Height="32" Click="RegisterButton_Click" Background="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}">
+                    <TextBlock>
+                    Register
+                    </TextBlock>
+                </Button>
+            </Grid>
+            <TextBox x:Name="IpBox" Grid.Row="8" Background="#FF363636" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
         </Grid>
     </DockPanel>
 </Window>
