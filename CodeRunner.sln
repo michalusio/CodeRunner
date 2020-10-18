@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBLayer", "DBLayer\DBLayer.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormClient", "FormClient\FormClient.csproj", "{F390FE05-E081-4D73-A66B-3D3594391199}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTOs", "DTOs\DTOs.csproj", "{B4E07D5C-5408-4515-88BE-A3569E9B7B34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{F390FE05-E081-4D73-A66B-3D3594391199}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F390FE05-E081-4D73-A66B-3D3594391199}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F390FE05-E081-4D73-A66B-3D3594391199}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4E07D5C-5408-4515-88BE-A3569E9B7B34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4E07D5C-5408-4515-88BE-A3569E9B7B34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4E07D5C-5408-4515-88BE-A3569E9B7B34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4E07D5C-5408-4515-88BE-A3569E9B7B34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
