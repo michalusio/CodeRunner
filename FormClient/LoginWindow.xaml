@@ -21,6 +21,7 @@
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
+                <RowDefinition Height="24"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="32"/>
                 <RowDefinition Height="24"/>
@@ -31,7 +32,8 @@
             <Controls:TextBoxWithPlaceholder x:Name="usernameBox" Placeholder="Username" Grid.Row="0" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Text="admin" Visibility="Collapsed"/>
             <Controls:TextBoxWithPlaceholder x:Name="emailBox" Placeholder="Email" Grid.Row="2" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Text="admin@admin.admin"/>
             <Controls:PasswordBoxWithPlaceholder x:Name="passwordBox" Placeholder="Password" Grid.Row="4" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-            <Grid Grid.Row="6">
+            <TextBlock x:Name="errorBox" Foreground="#FFFF3737" Grid.Row="6"/>
+            <Grid Grid.Row="7">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -47,7 +49,7 @@
                     </TextBlock>
                 </Button>
             </Grid>
-            <TextBox x:Name="IpBox" Grid.Row="8" Background="#FF363636" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+            <TextBox x:Name="IpBox" Grid.Row="9" Background="#FF363636" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
         </Grid>
     </DockPanel>
 </Window>

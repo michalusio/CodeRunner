@@ -1,5 +1,4 @@
 ﻿using System.Net.Http;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace FormClient
@@ -11,27 +10,38 @@ namespace FormClient
             InitializeComponent();
         }
 
-        private async void PostButton_Click(object sender, RoutedEventArgs e)
+        private async void PostButton_Click(object sender, RoutedEventArgs evnt)
         {
-            var response = await App.HttpClient.PutAsync(App.ServerIp + "code", new StringContent(textBox.Text));
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                Close();
+                var response = await App.HttpClient.PutAsync(App.ServerIp + "code", new StringContent(textBox.Text));
+                if (!response.IsSuccessStatusCode)
+                {
+                    Close();
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                await errorBox.Dispatcher.InvokeAsync(() => { errorBox.Text = e.Message; });
             }
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs evnt)
         {
-            var response = await App.HttpClient.GetAsync(App.ServerIp + "code");
-            var responseProgram = string.Empty;
-            if (response.IsSuccessStatusCode)
+            var responseProgram = Application.Current.Resources["DefaultProgram"] as string;
+            try
             {
-                responseProgram = await response.Content.ReadAsStringAsync();
+                var response = await App.HttpClient.GetAsync(App.ServerIp + "code");
+                if (response.IsSuccessStatusCode)
+                {
+                    responseProgram = await response.Content.ReadAsStringAsync();
+                }
             }
-            else
+            catch (HttpRequestException e)
             {
-                responseProgram = Application.Current.Resources["DefaultProgram"] as string;
+                await errorBox.Dispatcher.InvokeAsync(() => { errorBox.Text = e.Message; });
             }
+            
             await textBox.Dispatcher.InvokeAsync(() => textBox.Text = responseProgram);
         }
     }
