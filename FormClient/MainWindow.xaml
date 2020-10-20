@@ -15,8 +15,8 @@
         <Controls:WindowTopPanel DockPanel.Dock="Top" />
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="19*"/>
                 <RowDefinition/>
+                <RowDefinition Height="21"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -27,6 +27,7 @@
             <TextBox x:Name="textBox" Grid.ColumnSpan="4">
             </TextBox>
             <Button x:Name="PostButton" Content="Post Code" Grid.Row="1" Click="PostButton_Click"/>
+            <TextBlock x:Name="errorBox" Foreground="#FFFF3737" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
         </Grid>
     </DockPanel>
 </Window>
