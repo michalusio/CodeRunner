@@ -50,6 +50,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="BoardDrawer.cs" />
     <Compile Include="Controllers\CodeController.cs" />
+    <Compile Include="Controllers\MapController.cs" />
     <Compile Include="RunnerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +117,9 @@
     </PackageReference>
     <PackageReference Include="EntityFramework">
       <Version>6.4.4</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

@@ -21,7 +21,7 @@ namespace FormServer.Controllers
         {
             foreach(var usr in DBMiddleware.Context.Users)
             {
-                System.Console.WriteLine(usr.Email);
+                Console.WriteLine(usr.Email);
             }
             if (DBMiddleware.Context.Users.FirstOrDefault(u => u.Email == loginData.Email) is User user)
             {

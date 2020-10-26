@@ -1,4 +1,7 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.IO;
+using System.IO.Compression;
+using System.Net.Http;
 using System.Windows;
 
 namespace FormClient
@@ -43,6 +46,25 @@ namespace FormClient
             }
             
             await textBox.Dispatcher.InvokeAsync(() => textBox.Text = responseProgram);
+
+            try
+            {
+                var response = await App.HttpClient.GetAsync(App.ServerIp + "map/0,0");
+                if (response.IsSuccessStatusCode)
+                {
+                    using (var decompressionStream = new DeflateStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress))
+                    {
+                        using (var stringStream = new StreamReader(decompressionStream))
+                        {
+                            Console.WriteLine(stringStream.ReadToEnd());
+                        }
+                    }
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                await errorBox.Dispatcher.InvokeAsync(() => { errorBox.Text = e.Message; });
+            }
         }
     }
 }

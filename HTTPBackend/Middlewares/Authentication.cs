@@ -104,5 +104,16 @@ namespace HTTPBackend.Middlewares
                 }
             }
         }
+
+        public bool TryGetPlayerId(out Guid playerId)
+        {
+            if (SessionData.TryGetValue("PlayerID", out object probablePlayerId) && probablePlayerId is Guid guidPlayerId)
+            {
+                playerId = guidPlayerId;
+                return true;
+            }
+            playerId = Guid.Empty;
+            return false;
+        }
     }
 }

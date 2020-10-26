@@ -33,6 +33,9 @@
   <ItemGroup>
     <Compile Include="Direction.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Map.cs" />
+    <Compile Include="MapChunk.cs" />
+    <Compile Include="MapTile.cs" />
     <Compile Include="PlayerData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Random.cs" />

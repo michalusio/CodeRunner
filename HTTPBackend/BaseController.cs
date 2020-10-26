@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -224,6 +225,10 @@ namespace HTTPBackend
             {
                 return "[0-9]+";
             }
+            if (type == typeof(float) || type == typeof(double))
+            {
+                return @"-?[0-9]+(?:\.[0-9]+)?";
+            }
             if (type == typeof(string))
             {
                 return ".*?";
@@ -237,6 +242,8 @@ namespace HTTPBackend
             if (type == typeof(long)) return long.Parse(value);
             if (type == typeof(uint)) return uint.Parse(value);
             if (type == typeof(ulong)) return ulong.Parse(value);
+            if (type == typeof(float)) return float.Parse(value, CultureInfo.InvariantCulture.NumberFormat);
+            if (type == typeof(double)) return double.Parse(value, CultureInfo.InvariantCulture.NumberFormat);
             if (type == typeof(string)) return value.Normalize();
             return JsonConvert.DeserializeObject(value, type);
         }

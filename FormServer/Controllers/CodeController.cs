@@ -20,7 +20,7 @@ namespace FormServer.Controllers
         [Request(RequestMethodType.PUT, "")]
         public void CodeInput([RequestBody] string body)
         {
-            if (!Authentication.Data[Response].SessionData.TryGetValue("PlayerID", out object playerIdObj) || !(playerIdObj is Guid playerId))
+            if (!Authentication.Data[Response].TryGetPlayerId(out Guid playerId))
             {
                 Response.StatusCode = 403;
                 return;
@@ -48,7 +48,7 @@ namespace FormServer.Controllers
         [Request(RequestMethodType.GET)]
         public void CodeGet()
         {
-            if (!Authentication.Data[Response].SessionData.TryGetValue("PlayerID", out object playerIdObj) || !(playerIdObj is Guid playerId))
+            if (!Authentication.Data[Response].TryGetPlayerId(out Guid playerId))
             {
                 Response.StatusCode = 403;
                 return;

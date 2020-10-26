@@ -40,7 +40,8 @@ namespace FormServer
             var controllers = new BaseController[]
             {
                 new AccountController(mainConsoleWriter),
-                new CodeController(mainConsoleWriter, richTextBoxConsole)
+                new CodeController(mainConsoleWriter, richTextBoxConsole),
+                new MapController(mainConsoleWriter)
             };
             httpListener = new HttpListener(controllers, mainConsoleWriter);
         }
@@ -95,7 +96,7 @@ namespace FormServer
             httpListener.StartListener();
         }
 
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             boardDrawer.Paint(e.Graphics, e.ClipRectangle.Size);
         }
