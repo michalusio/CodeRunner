@@ -1,5 +1,8 @@
 ﻿using DTOs;
 using Newtonsoft.Json;
+using Reactive.Observables;
+using Reactive.Operators;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,7 +11,6 @@ namespace FormClient
 {
     public partial class LoginWindow : Window
     {
-
         public LoginWindow()
         {
             InitializeComponent();

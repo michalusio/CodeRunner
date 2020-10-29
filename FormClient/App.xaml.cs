@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Windows;
 
 namespace FormClient
@@ -30,6 +31,21 @@ namespace FormClient
             HttpClient = new HttpClient(Handler);
         }
 
+        private static readonly Mutex mutex = new Mutex(true, "{EC5C5F21-50FE-4574-B199-B8B384A24BC7}");
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            if (!mutex.WaitOne(TimeSpan.Zero, true))
+            {
+                NativeMethods.PostMessage(
+                    (IntPtr)NativeMethods.HWND_BROADCAST,
+                    NativeMethods.WM_SHOWME,
+                    IntPtr.Zero,
+                    IntPtr.Zero);
+                Environment.Exit(0);
+            }
+            base.OnStartup(e);
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -44,6 +60,7 @@ namespace FormClient
                 HttpClient = null;
                 Handler?.Dispose();
                 Handler = null;
+                mutex.ReleaseMutex();
             }
         }
     }

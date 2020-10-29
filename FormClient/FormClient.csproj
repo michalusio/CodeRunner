@@ -101,6 +101,7 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -135,6 +136,14 @@
     <ProjectReference Include="..\DTOs\DTOs.csproj">
       <Project>{b4e07d5c-5408-4515-88be-a3569e9b7b34}</Project>
       <Name>DTOs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Reactive\Reactive.csproj">
+      <Project>{5F022C35-9D20-4EF8-999D-4142E136D70F}</Project>
+      <Name>Reactive</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SystemDll\SystemDll.csproj">
+      <Project>{5e1764fc-92ab-4932-87c7-b56ec9d81c29}</Project>
+      <Name>SystemDll</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

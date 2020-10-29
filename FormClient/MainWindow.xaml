@@ -24,8 +24,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="textBox" Grid.ColumnSpan="4">
-            </TextBox>
+            <TextBox x:Name="textBox" Grid.ColumnSpan="1"/>
+            <Canvas x:Name="GameField" Grid.Column="1" Grid.ColumnSpan="3"/>
             <Button x:Name="PostButton" Content="Post Code" Grid.Row="1" Click="PostButton_Click"/>
             <TextBlock x:Name="errorBox" Foreground="#FFFF3737" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
         </Grid>
